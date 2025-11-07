@@ -1,0 +1,314 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FleetTrack - Bienvenido</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #007d7d;
+            --primary-light: #1A8D8C;
+            --primary-dark: #004d4d;
+            --accent: #2563eb;
+            --accent-dark: #1d4ed8;
+            --success: #059669;
+            --success-dark: #047857;
+        }
+        
+        body {
+            background-color: #e6f3f3;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
+        
+        .navbar {
+            background-color: var(--primary-light);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, rgba(230, 243, 243, 0.9) 0%, rgba(255, 255, 255, 0.9) 100%), 
+                        url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 20px;
+            text-align: center;
+            border-radius: 0 0 30px 30px;
+            margin-bottom: 60px;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            color: #333;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        .features {
+            margin-top: 50px;
+            padding-bottom: 80px;
+        }
+        
+        .feature-card {
+            padding: 30px 25px;
+            border-radius: 15px;
+            background-color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            text-align: center;
+            border-top: 4px solid var(--primary);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .feature-card h4 {
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .feature-card p {
+            color: #555;
+        }
+        
+        .btn-login {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        
+        .btn-login:hover {
+            background-color: var(--accent-dark);
+            border-color: var(--accent-dark);
+            color: white;
+        }
+        
+        .btn-register {
+            background-color: var(--success);
+            border-color: var(--success);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        
+        .btn-register:hover {
+            background-color: var(--success-dark);
+            border-color: var(--success-dark);
+            color: white;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            padding: 12px 35px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--accent-dark);
+            border-color: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--primary-dark);
+            font-weight: 700;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+        
+        .stats-section {
+            background-color: white;
+            padding: 60px 0;
+            border-radius: 20px;
+            margin-bottom: 60px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            color: #555;
+            font-weight: 500;
+        }
+        
+        footer {
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            margin-top: 60px;
+        }
+        
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .hero {
+                padding: 70px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra superior -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <!-- Logo + Nombre -->
+            <a class="navbar-brand d-flex align-items-center text-white" href="#">
+                 <img src="{% static 'logo.png' %}" alt="FleetTrack Logo" height="40" class="me-2">
+                <span class="fw-bold">FleetTrack</span>
+            </a>
+
+            <!-- Botones alineados a la derecha -->
+            <div class="d-flex">
+                <a href="{% url 'login' %}" class="btn btn-login me-2">Iniciar Sesión</a>
+                <a href="{% url 'register' %}" class="btn btn-register">Registrarse</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sección principal -->
+    <div class="hero">
+        <div class="container">
+            <h1>Bienvenido a FleetTrack</h1>
+            <p>Gestiona tu flota de autobuses de forma eficiente, con reportes, control de gastos, viajes y choferes en un solo lugar.</p>
+            <a href="{% url 'login' %}" class="btn btn-primary btn-lg">Comenzar Ahora</a>
+        </div>
+    </div>
+
+    <!-- Sección de estadísticas -->
+    <div class="container stats-section">
+        <div class="row">
+            <div class="col-md-3 col-6">
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Empresas Confían</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stat-item">
+                    <div class="stat-number">15K+</div>
+                    <div class="stat-label">Vehículos Gestionados</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stat-item">
+                    <div class="stat-number">30%</div>
+                    <div class="stat-label">Ahorro en Costos</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Soporte Técnico</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de características -->
+    <div class="container features">
+        <h2 class="section-title">Nuestras Características</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">🚍</div>
+                    <h4>Gestión de Camiones</h4>
+                    <p>Controla el estado de cada unidad y programa mantenimientos preventivos para maximizar la vida útil de tu flota.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">👨‍✈️</div>
+                    <h4>Control de Choferes</h4>
+                    <p>Administra licencias, horarios y asignaciones fácilmente con nuestro sistema integrado de gestión de personal.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h4>Reportes Financieros</h4>
+                    <p>Obtén reportes detallados de ingresos, gastos y optimiza costos con análisis en tiempo real.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-logo">FleetTrack</div>
+            <p>Gestión inteligente para tu flota de transporte</p>
+            <p>&copy; 2025 FleetTrack. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

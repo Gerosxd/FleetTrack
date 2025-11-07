@@ -1,0 +1,958 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FleetTrack - Dashboard</title>
+    <style>
+        :root {
+            --primary: #007d7d;
+            --primary-light: #4da6a6;
+            --primary-dark: #005a5a;
+            --secondary: #2c3e50;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #34495e;
+            --gray: #95a5a6;
+            --light-gray: #f8f9fa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e6f3f3 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+       
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .user-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffffff 0%, #e6f3f3 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dashboard-title {
+            margin: 30px 0 20px;
+            color: var(--primary-dark);
+            font-size: 32px;
+            text-align: center;
+            font-weight: 700;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .dashboard-subtitle {
+            text-align: center;
+            color: var(--gray);
+            margin-bottom: 40px;
+            font-size: 16px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .stat-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            background: var(--primary);
+            box-shadow: 0 4px 8px rgba(0, 125, 125, 0.3);
+        }
+        
+        .truck-icon {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+        }
+        
+        .driver-icon {
+            background: linear-gradient(135deg, var(--primary-light) 0%, #3db9b9 100%);
+        }
+        
+        .finance-icon {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #004a4a 100%);
+        }
+        
+        .client-icon {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+        }
+        
+        .income-icon {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+        }
+        
+        .expense-icon {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+        
+        .partner-icon {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        }
+        
+        .stat-card-content {
+            margin-bottom: 20px;
+        }
+        
+        .stat-card-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 5px;
+            line-height: 1;
+        }
+        
+        .stat-card-description {
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        .stat-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .stat-card-trend {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .trend-up {
+            color: var(--success);
+        }
+        
+        .trend-down {
+            color: var(--danger);
+        }
+        
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            box-shadow: 0 3px 6px rgba(0, 125, 125, 0.2);
+        }
+        
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 125, 125, 0.3);
+        }
+        
+        .btn-icon {
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .btn:hover .btn-icon {
+            transform: translateX(3px);
+        }
+        
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .recent-activity {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+            flex: 1;
+        }
+        
+        .upcoming-trips {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+            flex: 1;
+        }
+        
+        .financial-overview {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+            flex: 1;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title-icon {
+            font-size: 22px;
+        }
+        
+        .activity-list, .trip-list {
+            list-style-type: none;
+        }
+        
+        .activity-item, .trip-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f1f1f1;
+            transition: background-color 0.2s ease;
+        }
+        
+        .activity-item:hover, .trip-item:hover {
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        
+        .activity-item:last-child, .trip-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon, .trip-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+        
+        .activity-content, .trip-content {
+            flex: 1;
+        }
+        
+        .activity-title, .trip-title {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .activity-time, .trip-date {
+            color: var(--gray);
+            font-size: 12px;
+        }
+        
+        .trip-destination {
+            color: var(--dark);
+            font-size: 14px;
+        }
+        
+        .trip-status {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-confirmed {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: var(--success);
+        }
+        
+        .status-pending {
+            background-color: rgba(243, 156, 18, 0.1);
+            color: var(--warning);
+        }
+        
+        .status-completed {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: #3498db;
+        }
+        
+        .financial-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .financial-item {
+            text-align: center;
+            padding: 15px;
+            background: var(--light-gray);
+            border-radius: 8px;
+        }
+        
+        .financial-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .financial-label {
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        .income-value {
+            color: var(--success);
+        }
+        
+        .expense-value {
+            color: var(--danger);
+        }
+        
+        .profit-value {
+            color: var(--primary);
+        }
+        
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .quick-actions {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+        }
+        
+        .action-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .action-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: var(--light-gray);
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .action-item:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .action-item:hover .action-icon {
+            background: white;
+            color: var(--primary);
+        }
+        
+        .action-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            color: white;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+        
+        .action-text {
+            font-weight: 500;
+        }
+        
+        .maintenance-alerts {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+        }
+        
+        .alert-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f1f1;
+        }
+        
+        .alert-item:last-child {
+            border-bottom: none;
+        }
+        
+        .alert-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(231, 76, 60, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            color: var(--danger);
+            flex-shrink: 0;
+        }
+        
+        .alert-content {
+            flex: 1;
+        }
+        
+        .alert-title {
+            font-weight: 500;
+            margin-bottom: 3px;
+            font-size: 14px;
+        }
+        
+        .alert-details {
+            color: var(--gray);
+            font-size: 12px;
+        }
+        
+        .performance-section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .performance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .performance-card {
+            padding: 20px;
+            background: var(--light-gray);
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .performance-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .performance-label {
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--gray);
+        }
+        
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+        
+        .empty-state-text {
+            font-size: 14px;
+        }
+        
+        @media (max-width: 1100px) {
+            .dashboard-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .dashboard-title {
+                font-size: 26px;
+            }
+            
+            .stat-card-value {
+                font-size: 30px;
+            }
+            
+            .financial-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <!-- Logo -->
+                <img src="{% static 'logo.png' %}" alt="FleetTrack Logo" height="40">
+                <span>FleetTrack</span>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">{{ initials }}</div>
+                <span>{{ user.username }}</span>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <h1 class="dashboard-title">Dashboard de FleetTrack</h1>
+        <p class="dashboard-subtitle">Resumen completo de tu flota y operaciones</p>
+        
+        <!-- Estadísticas Principales -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-card-header">
+                    <h2 class="stat-card-title">Camiones</h2>
+                    <div class="stat-card-icon truck-icon">🚚</div>
+                </div>
+                <div class="stat-card-content">
+                    <div class="stat-card-value">12</div>
+                    <p class="stat-card-description">Total registrados</p>
+                </div>
+                <div class="stat-card-footer">
+                    <div class="stat-card-trend trend-up">
+                        +2 este mes
+                    </div>
+                    <a href="{% url 'camion_lista' %}" class="btn">Ver Camiones <span class="btn-icon">→</span></a>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-card-header">
+                    <h2 class="stat-card-title">Choferes</h2>
+                    <div class="stat-card-icon driver-icon">👨‍💼</div>
+                </div>
+                <div class="stat-card-content">
+                    <div class="stat-card-value">8</div>
+                    <p class="stat-card-description">Total activos</p>
+                </div>
+                <div class="stat-card-footer">
+                    <div class="stat-card-trend trend-up">
+                        +1 este mes
+                    </div>
+                    <a href="{% url 'chofer_lista' %}" class="btn">Ver Choferes <span class="btn-icon">→</span></a>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-card-header">
+                    <h2 class="stat-card-title">Clientes</h2>
+                    <div class="stat-card-icon client-icon">👥</div>
+                </div>
+                <div class="stat-card-content">
+                    <div class="stat-card-value">45</div>
+                    <p class="stat-card-description">Clientes registrados</p>
+                </div>
+                <div class="stat-card-footer">
+                    <div class="stat-card-trend trend-up">
+                        +5 este mes
+                    </div>
+                    <a href="{% url 'cliente_lista' %}" class="btn">Ver Clientes <span class="btn-icon">→</span></a>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-card-header">
+                    <h2 class="stat-card-title">Socios Negocio</h2>
+                    <div class="stat-card-icon partner-icon">🤝</div>
+                </div>
+                <div class="stat-card-content">
+                    <div class="stat-card-value">8</div>
+                    <p class="stat-card-description">Socios activos</p>
+                </div>
+                <div class="stat-card-footer">
+                    <div class="stat-card-trend trend-up">
+                        +2 este mes
+                    </div>
+                    <a href="{% url 'socio_lista' %}" class="btn">Ver Socios <span class="btn-icon">→</span></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rendimiento de Camiones -->
+        <div class="performance-section">
+            <h2 class="section-title">
+                <span class="section-title-icon">📊</span>
+                Rendimiento de Camiones
+            </h2>
+            <div class="performance-grid">
+                <div class="performance-card">
+                    <div class="performance-value">15,248</div>
+                    <div class="performance-label">Km promedio/mes</div>
+                </div>
+                <div class="performance-card">
+                    <div class="performance-value">8.5</div>
+                    <div class="performance-label">Km/L promedio</div>
+                </div>
+                <div class="performance-card">
+                    <div class="performance-value">$3.20</div>
+                    <div class="performance-label">Costo por km</div>
+                </div>
+                <div class="performance-card">
+                    <div class="performance-value">92%</div>
+                    <div class="performance-label">Disponibilidad</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contenido Principal -->
+        <div class="dashboard-content">
+            <div class="main-content">
+                <!-- Actividad Reciente -->
+                <div class="recent-activity">
+                    <h2 class="section-title">
+                        <span class="section-title-icon">📋</span>
+                        Actividad Reciente
+                    </h2>
+                    <ul class="activity-list">
+                        <li class="activity-item">
+                            <div class="activity-icon">🚛</div>
+                            <div class="activity-content">
+                                <div class="activity-title">Nuevo camión registrado</div>
+                                <div class="activity-time">Hace 2 horas</div>
+                            </div>
+                        </li>
+                        <li class="activity-item">
+                            <div class="activity-icon">📋</div>
+                            <div class="activity-content">
+                                <div class="activity-title">Reporte de mantenimiento actualizado</div>
+                                <div class="activity-time">Hace 5 horas</div>
+                            </div>
+                        </li>
+                        <li class="activity-item">
+                            <div class="activity-icon">👨‍💼</div>
+                            <div class="activity-content">
+                                <div class="activity-title">Nuevo chofer agregado al sistema</div>
+                                <div class="activity-time">Ayer</div>
+                            </div>
+                        </li>
+                        <li class="activity-item">
+                            <div class="activity-icon">💰</div>
+                            <div class="activity-content">
+                                <div class="activity-title">Reporte financiero del mes generado</div>
+                                <div class="activity-time">Hace 2 días</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Próximos Viajes -->
+                <div class="upcoming-trips">
+                    <h2 class="section-title">
+                        <span class="section-title-icon">🗓️</span>
+                        Próximos Viajes
+                    </h2>
+                    <ul class="trip-list">
+                        <li class="trip-item">
+                            <div class="trip-icon">🚌</div>
+                            <div class="trip-content">
+                                <div class="trip-title">Viaje a Guadalajara <span class="trip-status status-confirmed">Confirmado</span></div>
+                                <div class="trip-destination">Camión: Volvo 2020 • Chofer: Juan Pérez</div>
+                                <div class="trip-date">15 Sep, 2023 • 08:00 AM</div>
+                            </div>
+                        </li>
+                        <li class="trip-item">
+                            <div class="trip-icon">🚌</div>
+                            <div class="trip-content">
+                                <div class="trip-title">Viaje a Monterrey <span class="trip-status status-pending">Pendiente</span></div>
+                                <div class="trip-destination">Camión: Mercedes 2021 • Chofer: María García</div>
+                                <div class="trip-date">18 Sep, 2023 • 10:30 AM</div>
+                            </div>
+                        </li>
+                        <li class="trip-item">
+                            <div class="trip-icon">🚌</div>
+                            <div class="trip-content">
+                                <div class="trip-title">Viaje a Puebla <span class="trip-status status-completed">Completado</span></div>
+                                <div class="trip-destination">Camión: Scania 2019 • Chofer: Carlos López</div>
+                                <div class="trip-date">12 Sep, 2023 • 07:00 AM</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Resumen Financiero -->
+                <div class="financial-overview">
+                    <h2 class="section-title">
+                        <span class="section-title-icon">💰</span>
+                        Resumen Financiero - Septiembre 2025
+                    </h2>
+                    <div class="financial-stats">
+                        <div class="financial-item">
+                            <div class="financial-value income-value">$125,430</div>
+                            <div class="financial-label">Ingresos Totales</div>
+                        </div>
+                        <div class="financial-item">
+                            <div class="financial-value expense-value">$78,290</div>
+                            <div class="financial-label">Gastos Totales</div>
+                        </div>
+                        <div class="financial-item">
+                            <div class="financial-value profit-value">$47,140</div>
+                            <div class="financial-label">Ganancia Neta</div>
+                        </div>
+                        <div class="financial-item">
+                            <div class="financial-value">28</div>
+                            <div class="financial-label">Viajes Realizados</div>
+                        </div>
+                    </div>
+                    <div class="stat-card-footer">
+                        <a href="#" class="btn">Ver Reporte Completo <span class="btn-icon">→</span></a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Acciones Rápidas -->
+                <div class="quick-actions">
+                    <h2 class="section-title">
+                        <span class="section-title-icon">⚡</span>
+                        Acciones Rápidas
+                    </h2>
+                    <div class="action-list">
+                        <a href="{% url 'crear_viaje' %}" class="action-item">
+                            <div class="action-icon">➕</div>
+                            <div class="action-text">Agregar Viaje</div>
+                        </a>
+<a href="{% url 'chofer_crear' %}" class="action-item">
+                            <div class="action-icon">👨‍💼</div>
+                            <div class="action-text">Registrar Chofer</div>
+                        </a>
+                        <a href="{% url 'camion_crear' %}"  class="action-item">
+                            <div class="action-icon">🚚</div>
+                            <div class="action-text">Agregar Camión</div>
+                        </a>
+                        </a>
+                        <a href="#" class="action-item">
+                            <div class="action-icon">📊</div>
+                            <div class="action-text">Generar Reporte</div>
+                        </a>
+                        <a href="{% url 'cliente_crear' %}" class="action-item">
+                            <div class="action-icon">👥</div>
+                            <div class="action-text">Agregar Cliente</div>
+                        </a>
+                        <a href="#" class="action-item">
+                            <div class="action-icon">💸</div>
+                            <div class="action-text">Registrar Gasto</div>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Gestión de Viajes -->
+<div class="quick-actions">
+    <h2 class="section-title">
+        <span class="section-title-icon">📋</span>
+        Gestión de Viajes
+    </h2>
+    <div class="action-list">
+        <a href="{% url 'lista_viajes' %}" class="action-item">
+            <div class="action-icon">📊</div>
+            <div class="action-text">Ver Todos los Viajes</div>
+        </a>
+        <a href="{% url 'crear_viaje' %}" class="action-item">
+            <div class="action-icon">➕</div>
+            <div class="action-text">Agregar Nuevo Viaje</div>
+        </a>
+        <a href="#" class="action-item">
+            <div class="action-icon">🗓️</div>
+            <div class="action-text">Ver Calendario</div>
+        </a>
+    </div>
+</div>
+
+                <!-- Alertas de Mantenimiento -->
+                <div class="maintenance-alerts">
+                    <h2 class="section-title">
+                        <span class="section-title-icon">⚠️</span>
+                        Alertas de Mantenimiento
+                    </h2>
+                    <div class="alert-list">
+                        <div class="alert-item">
+                            <div class="alert-icon">🔧</div>
+                            <div class="alert-content">
+                                <div class="alert-title">Cambio de aceite pendiente</div>
+                                <div class="alert-details">Camión #5 • Vence en 3 días</div>
+                            </div>
+                        </div>
+                        <div class="alert-item">
+                            <div class="alert-icon">🔧</div>
+                            <div class="alert-content">
+                                <div class="alert-title">Revisión de frenos</div>
+                                <div class="alert-details">Camión #2 • Vence en 1 semana</div>
+                            </div>
+                        </div>
+                        <div class="alert-item">
+                            <div class="alert-icon">🔧</div>
+                            <div class="alert-content">
+                                <div class="alert-title">Inspección general</div>
+                                <div class="alert-details">Camión #7 • Vence en 2 semanas</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+                
+                <!-- Top Clientes -->
+                <div class="quick-actions">
+                    <h2 class="section-title">
+                        <span class="section-title-icon">🏆</span>
+                        Top Clientes
+                    </h2>
+                    <div class="action-list">
+                        <div class="action-item">
+                            <div class="action-icon">🥇</div>
+                            <div class="action-text">
+                                <div>Empresa XYZ</div>
+                                <small>$45,200 este año</small>
+                            </div>
+                        </div>
+                        <div class="action-item">
+                            <div class="action-icon">🥈</div>
+                            <div class="action-text">
+                                <div>Hotel Playa</div>
+                                <small>$38,750 este año</small>
+                            </div>
+                        </div>
+                        <div class="action-item">
+                            <div class="action-icon">🥉</div>
+                            <div class="action-text">
+                                <div>Universidad Norte</div>
+                                <small>$32,100 este año</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 style="color: #007d7d; font-weight: 700;">Lista de Viajes</h2>
+    <a href="{% url 'crear_viaje' %}" class="btn btn-primary" role="button">
+        ➕ Añadir Nuevo Viaje
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        <table class="table table-hover align-middle mb-0">
+            <thead style="background: linear-gradient(135deg, #007d7d 0%, #005a5a 100%); color: white;">
+                <tr>
+                    <th class="p-3">Destino</th>
+                    <th class="p-3">Cliente</th>
+                    <th class="p-3">Fecha de Salida</th>
+                    <th class="p-3">Camión</th>
+                    <th class="p-3">Estado</th>
+                    <th class="p-3 text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for viaje in viajes %}
+                <tr>
+                    <td class="p-3">{{ viaje.destino }}</td>
+                    <td class="p-3">{{ viaje.cliente.nombre }}</td>
+                    <td class="p-3">{{ viaje.fecha_salida|date:"d/m/Y H:i" }}</td>
+                    <td class="p-3">{{ viaje.camion.placas }}</td>
+                    <td class="p-3"><span class="badge bg-primary">{{ viaje.estado }}</span></td>
+                    <td class="p-3 text-center">
+                        <a href="{% url 'viaje_editar' viaje.pk %}" class="btn btn-sm btn-warning">Editar</a>
+                        <a href="{% url 'viaje_borrar' viaje.pk %}" class="btn btn-sm btn-danger">Borrar</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="p-5 text-center text-muted">
+                        Aún no hay viajes registrados.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>FleetTrack - Iniciar sesión</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #e6f2f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .box {
+      background: #fff;
+      width: 360px;
+      padding: 28px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.12);
+      text-align: center;
+    }
+    h2 {
+      color: #007C80;
+      margin: 0 0 16px;
+    }
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      margin: 8px 0;
+      border: 1px solid #d7d7d7;
+      border-radius: 8px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #007C80;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #00666a;
+    }
+    .alert {
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    .alert-error {
+      background-color: #fdecea;
+      color: #d93025;
+      border: 1px solid #f5c2c0;
+    }
+    .alert-success {
+      background-color: #e6f7ed;
+      color: #1e7d34;
+      border: 1px solid #b4e2c1;
+    }
+    .link {
+      display: block;
+      margin-top: 15px;
+      font-size: 14px;
+      color: #007C80;
+      text-decoration: none;
+    }
+    .link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Inicia sesión en FleetTrack</h2>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert {% if message.tags == 'error' %}alert-error{% else %}alert-success{% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+      <input type="text" name="username" placeholder="Usuario" required />
+      <input type="password" name="password" placeholder="Contraseña" required />
+      <button type="submit">Ingresar</button>
+    </form>
+
+    <a class="link" href="{% url 'register' %}">¿No tienes cuenta? Regístrate aquí</a>
+  </div>
+</body>
+</html>

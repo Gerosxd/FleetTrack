@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 style="color: #007d7d; font-weight: 700;">Lista de Socios de Negocio</h2>
+    <a href="{% url 'socio_crear' %}" class="btn btn-primary" role="button">
+        ➕ Añadir Nuevo Socio
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        <table class="table table-hover align-middle mb-0">
+            <thead style="background: linear-gradient(135deg, #007d7d 0%, #005a5a 100%); color: white;">
+                <tr>
+                    <th class="p-3">Nombre Empresa</th>
+                    <th class="p-3">Contacto</th>
+                    <th class="p-3">Teléfono</th>
+                    <th class="p-3">Correo</th>
+                    <th class="p-3 text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for socio in socios %}
+                <tr>
+                    <td class="p-3">{{ socio.nombre_empresa }}</td>
+                    <td class="p-3">{{ socio.contacto }}</td>
+                    <td class="p-3">{{ socio.telefono }}</td>
+                    <td class="p-3">{{ socio.correo }}</td>
+                    <td class="p-3 text-center">
+                        <a href="{% url 'socio_editar' socio.pk %}" class="btn btn-sm btn-warning">Editar</a>
+                        <a href="{% url 'socio_borrar' socio.pk %}" class="btn btn-sm btn-danger">Borrar</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="p-5 text-center text-muted">
+                        Aún no hay socios registrados.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

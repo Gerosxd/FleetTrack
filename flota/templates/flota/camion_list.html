@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+    <header>
+        <h1 style="display: inline-block;">Camiones</h1>
+        <a href="{% url 'camion_crear' %}" role="button" class="btn btn-primary" style="float: right;">+ Añadir Camión</a>
+    </header>
+    <table class="table table-hover align-middle">
+        <thead><tr><th>Placas</th><th>Modelo</th><th>Año</th><th>Capacidad</th><th>Estado</th><th>Acciones</th></tr></thead>
+        <tbody>
+            {% for camion in camiones %}
+            <tr>
+                <td>{{ camion.placas }}</td>
+                <td>{{ camion.modelo }}</td>
+                <td>{{ camion.anio }}</td>
+                <td>{{ camion.capacidad }}</td>
+                <td>{{ camion.estado }}</td>
+                <td>
+                  <a href="{% url 'camion_editar' camion.pk %}" class="btn btn-sm btn-warning">Editar</a>
+<a href="{% url 'camion_borrar' camion.pk %}" class="btn btn-sm btn-danger">Borrar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6">No hay camiones registrados.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

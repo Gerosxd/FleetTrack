@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <header>
+        <h1 style="display: inline-block;">Clientes</h1>
+        <a href="{% url 'cliente_crear' %}" role="button" class="btn btn-primary" style="float: right;">+ Añadir Cliente</a>
+    </header>
+    <table class="table table-hover align-middle">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Teléfono</th>
+                <th>Correo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cliente in clientes %}
+            <tr>
+                <td>{{ cliente.nombre }}</td>
+                <td>{{ cliente.telefono }}</td>
+                <td>{{ cliente.correo }}</td>
+                <td>
+<a href="{% url 'cliente_editar' cliente.pk %}">Editar</a> |
+<a href="{% url 'cliente_borrar' cliente.pk %}" style="color:tomato;">Borrar</a>
+
+<a href="{% url 'cliente_editar' cliente.pk %}" class="btn btn-sm btn-warning">Editar</a>
+<a href="{% url 'cliente_borrar' cliente.pk %}" class="btn btn-sm btn-danger">Borrar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4">No hay clientes registrados.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

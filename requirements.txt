@@ -1,0 +1,11 @@
+pip freeze > requirements.txt
+# crea y activa un entorno virtual (opcional pero recomendado)
+python -m venv venv
+# Windows
+venv\Scripts\activate
+# Linux/Mac
+source venv/bin/activate
+
+# instala dependencias
+pip install -r requirements.txt
+

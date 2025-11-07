@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2 style="color: #007d7d; font-weight: 700; margin-bottom: 20px;">Lista de Choferes</h2>
+    
+    <a href="{% url 'chofer_crear' %}" class="btn" style="background: #007d7d; color: white; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px;">
+        <span>➕</span>
+        Agregar Chofer
+    </a>
+
+    <div style="background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); overflow: hidden;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead style="background: linear-gradient(135deg, #007d7d 0%, #005a5a 100%); color: white;">
+                <tr>
+                    <th style="padding: 15px 20px; font-weight: 600; text-align: left;">Nombre</th>
+                    <th style="padding: 15px 20px; font-weight: 600; text-align: left;">Licencia</th>
+                    <th style="padding: 15px 20px; font-weight: 600; text-align: left;">Teléfono</th>
+                    <th style="padding: 15px 20px; font-weight: 600; text-align: left;">Estado</th>
+                    <th style="padding: 15px 20px; font-weight: 600; text-align: center;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for chofer in choferes %}
+                <tr style="border-bottom: 1px solid #f1f1f1;">
+                    <td style="padding: 15px 20px;">{{ chofer.nombre }}</td>
+                    <td style="padding: 15px 20px;">{{ chofer.licencia }}</td>
+                    <td style="padding: 15px 20px;">{{ chofer.telefono }}</td>
+                    <td style="padding: 15px 20px;">{{ chofer.estado }}</td>
+                    <td style="padding: 15px 20px; text-align: center;">
+                        <a href="{% url 'chofer_editar' chofer.id %}" style="background: #f39c12; color: white; text-decoration: none; padding: 6px 12px; border-radius: 4px; font-size: 13px; margin-right: 5px;">
+                            Editar
+                        </a>
+                        <a href="{% url 'chofer_eliminar' chofer.id %}" style="background: #e74c3c; color: white; text-decoration: none; padding: 6px 12px; border-radius: 4px; font-size: 13px;">
+                            Eliminar
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" style="padding: 40px 20px; text-align: center; color: #95a5a6;">
+                        No hay choferes registrados.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

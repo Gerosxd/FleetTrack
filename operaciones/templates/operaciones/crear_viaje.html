@@ -1,0 +1,57 @@
+{% extends 'base.html' %} {% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-7">
+    <div class="card">
+      <div
+        class="card-header"
+        style="
+          background: linear-gradient(135deg, #007d7d 0%, #005a5a 100%);
+          color: white;
+        "
+      >
+        <h4 class="mb-0 text-center">
+          {% if object %} ✏️ Editar Viaje {% else %} 🚍 Registrar Nuevo Viaje {%
+          endif %}
+        </h4>
+      </div>
+      <div class="card-body p-4">
+        <form method="post">
+          {% csrf_token %} {% for field in form %}
+          <div class="mb-3">
+            <label
+              for="{{ field.id_for_label }}"
+              class="form-label fw-semibold"
+            >
+              {{ field.label }}
+            </label>
+
+            {{ field }} {% if field.help_text %}
+            <div class="form-text">{{ field.help_text }}</div>
+            {% endif %} {% if field.errors %}
+            <div class="text-danger small">{{ field.errors }}</div>
+            {% endif %}
+          </div>
+          {% endfor %}
+
+          <div class="d-flex gap-3 justify-content-center mt-4">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              style="padding: 10px 30px"
+            >
+              💾 Guardar Viaje
+            </button>
+            <a
+              href="{% url 'lista_viajes' %}"
+              class="btn btn-secondary"
+              style="padding: 10px 30px"
+            >
+              ❌ Cancelar
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
